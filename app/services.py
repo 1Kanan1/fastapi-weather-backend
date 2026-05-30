@@ -1,4 +1,5 @@
 import httpx
+from fastapi import HTTPException
 from cashews import cache
 from app.config import settings
 from anyio import to_thread
@@ -77,6 +78,23 @@ class WeatherService:
         }
 
         async with httpx.AsyncClient() as client:
-            response = await client.get(self.url, params=params)
-            response.raise_for_status()
-            return WeatherResponse(**response.json())
+            try:
+                response = await client.get(self.url, params=params)
+                response.raise_for_status()
+            except httpx.HTTPStatusError as e:
+                raise HTTPException(
+                    status_code=e.response.status_code,
+                    detail=f"Open-Meteo error: {e.response.text}"
+                )
+            except httpx.RequestError as e:
+                raise HTTPException(
+                    status_code=502,
+                    detail=f"Failed to reach Open-Meteo: {str(e)}"
+                )
+            try:
+                return WeatherResponse(**response.json())
+            except Exception as e:
+                raise HTTPException(
+                    status_code=502,
+                    detail=f"Invalid payload structure from Open-Meteo: {str(e)}"
+                )
