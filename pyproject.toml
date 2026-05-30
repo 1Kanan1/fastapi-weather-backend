@@ -1,0 +1,12 @@
+[project]
+name = "fastapi-weather-server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cashews>=7.5.0",
+    "fastapi[standard]>=0.136.1",
+    "httpx>=0.28.1",
+    "pytest>=9.0.3",
+]
