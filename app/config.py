@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     DATABASE_NAME: str = os.path.join(SERVER_DIR, "weather-data.sqlite3")
     OPEN_METEO_URL: str = "https://api.open-meteo.com/v1/forecast"
     DEFAULT_SEARCH_LIMIT: int = 20
+    ALLOWED_ORIGINS: str = "*"
 
 
 settings = Settings()

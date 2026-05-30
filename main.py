@@ -1,3 +1,4 @@
+from app.config import settings
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from app.router import router
@@ -11,7 +12,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[origin.strip() for origin in settings.ALLOWED_ORIGINS.split(",")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
